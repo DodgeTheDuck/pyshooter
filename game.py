@@ -2,6 +2,10 @@ import config
 from gfx import Gfx
 import sys
 import pygame as pg
+from ray import Ray
+from segment import Segment
+from vector import Vector
+import math as Math
 
 gfx: Gfx = None
 time_last_render: int = 0
@@ -12,6 +16,7 @@ fps_counter: int = 0
 tps_counter: int = 0
 fps: int = 0
 tps: int = 0
+player_angle: float = 0
 
 def init() -> None:
     global gfx, fps, time_last_frame    
@@ -52,12 +57,40 @@ def run() -> None:
         time_last_loop = time_now
 
 def __update(delta) -> None: 
+    global player_angle
+    player_angle += 0.1 * float(delta/1000.0)
     pass
 
 def __render() -> None:
-    global gfx
-    for i in range(1, round(config.HEIGHT * config.RENDER_SCALE)-1):
-        if i % 2: gfx.set_pixel(16, i, (255, 0, 0))
+    global gfx, player_angle
+
+    gfx.clear_buffer()
+
+    n_rays = round(config.WIDTH * config.RENDER_SCALE)
+    fov_rads: float = Math.radians(config.FOV)
+    fov_rads_half: float = fov_rads / 2
+    rad_step = fov_rads / n_rays    
+    mid_screen = round((config.HEIGHT * config.RENDER_SCALE) / 2)
+
+    screen_dist = ((config.WIDTH * config.RENDER_SCALE) / 2) / Math.tan(fov_rads_half)
+
+    segments = [
+        Segment(Vector(-10, 10), Vector(10, 10)),
+        Segment(Vector(10, 10), Vector(10, -10)),
+        Segment(Vector(10, -10), Vector(-10, -10)),
+        Segment(Vector(-10, -10), Vector(-10, 10))
+    ]    
+
+    for i in range(n_rays):        
+        ray_angle = -fov_rads_half + (rad_step * i) + player_angle
+        ray = Ray(Vector(0, 0), ray_angle)
+        result = ray.cast(segments)
+        if result is not None:                        
+            depth = result.depth * Math.cos(player_angle - ray_angle)
+            proj_height = round(screen_dist / (depth + 0.0001))
+            for j in range(proj_height):
+                gfx.set_pixel(i, round((mid_screen-proj_height/2))+j, (255/depth, 0, 0))
+    
     gfx.draw_buffer()
     gfx.draw_ui()
     gfx.swap_buffers()

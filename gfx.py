@@ -15,6 +15,9 @@ class Gfx:
     def set_pixel(self, x, y, color): 
         self.framebuffer.set_pixel(x, y, color)
 
+    def clear_buffer(self) -> None:
+        self.framebuffer.clear()
+
     def draw_buffer(self) -> None:
         self.surface.blit(pg.transform.scale(self.framebuffer.buffer, (config.WIDTH, config.HEIGHT)), (0, 0))
         pass
@@ -22,6 +25,7 @@ class Gfx:
     def draw_ui(self) -> None:
         s_txt_fps: pg.Surface = self.font.render("FPS: {0} / TPS: {1}".format(Game.fps, Game.tps), True, (0, 255, 0))
         self.surface.blit(s_txt_fps, (32, 32))
+    
 
     def swap_buffers(self) -> None:        
         pg.display.flip()    

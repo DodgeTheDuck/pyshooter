@@ -11,3 +11,6 @@ class Framebuffer:
 
     def set_pixel(self, x, y, color):
         self.buffer.set_at((x, y), color)
+
+    def clear(self) -> None:
+        self.buffer.fill((0,0,0))
