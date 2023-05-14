@@ -4,7 +4,7 @@ from vector import Vector
 from frustum import Frustum
 import input
 import config
-import game
+import engine
 
 class Player(Entity):
     def __init__(self, x, y):

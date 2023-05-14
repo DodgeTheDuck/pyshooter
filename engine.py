@@ -1,14 +1,9 @@
 import config
 import sys
 import input
-import math as Math
 import pygame as pg
 from gfx import Gfx
-from ray import Ray
-from segment import Segment
-from vector import Vector
-from player import Player
-from world import World
+from engine_state import EngineState
 
 gfx: Gfx = None
 time_last_render: int = 0
@@ -19,14 +14,16 @@ fps_counter: int = 0
 tps_counter: int = 0
 fps: int = 0
 tps: int = 0
-world: World
+engine_state: list[EngineState] = []
 
 def init() -> None:
     global gfx, fps, time_last_frame, world
     pg.init()
     gfx = Gfx(pg.display.set_mode(config.RESOLUTION))
-    time_last_frame = pg.time.get_ticks()        
-    world = World()
+    time_last_frame = pg.time.get_ticks()            
+
+def push_state(state: EngineState) -> None:
+    engine_state.append(state)
 
 def run() -> None:
     global fps, fps_counter, tps, tps_counter, time_last_update, time_last_render, time_last_loop, second_timer
@@ -35,7 +32,7 @@ def run() -> None:
     while True:
 
         #pygame window event checks
-        check_events()
+        __check_events()
 
         #update our timers
         #TODO: perhaps wrap timing shizzle in class/module
@@ -69,14 +66,14 @@ def run() -> None:
 
         time_last_loop = time_now
 
+def get_top_state() -> EngineState:
+    return engine_state[-1]
+
 def __update(delta) -> None:    
-    world.update(delta)
+    get_top_state().update(delta)
     pass
 
-def __render() -> None:
-    global gfx, world
-
-    
+def __render() -> None:    
 
     # n_rays = round(config.WIDTH * config.RENDER_SCALE)
     # fov_rads: float = Math.radians(config.FOV)
@@ -99,14 +96,16 @@ def __render() -> None:
     gfx.clear_buffer()
     gfx.draw_buffer()
 
-    world.render()
+    get_top_state().render()
+
     gfx.draw_ui()
     gfx.swap_buffers()
 
     pass
 
-def check_events():        
+def __check_events():        
     for event in pg.event.get():
+        get_top_state().handle_event(event)
         if event.type == pg.QUIT or (event.type == pg.KEYDOWN and event.key == pg.K_ESCAPE):
             pg.quit()
             sys.exit()

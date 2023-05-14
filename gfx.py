@@ -3,7 +3,7 @@ from framebuffer import Framebuffer
 from pixel import Pixel
 import pygame as pg
 import config
-import game as Game
+import engine as Game
 
 class Gfx:
     def __init__(self, pg_surface: pg.Surface):

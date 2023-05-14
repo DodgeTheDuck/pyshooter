@@ -1,9 +1,13 @@
 from vector import Vector
 
 # check if line segment intersects triangle using Cyrus Beck algorithm
-# I converted this in a fairly brain dead way to check it even works, which is does
+# I converted this in a fairly brain dead way from C++ found here...
 # https://www.geeksforgeeks.org/line-clipping-set-2-cyrus-beck-algorithm/
 # TODO: work out how it works and hopefully optimise it better for Python
+# BUG: 
+#       it appears to not be 100% accurate, but it is close. 
+#       I have a feeling there's some int/float shenanigans going on.
+#       Or I miss-typed something when converting from C++...
 def cyrus_beck_clip(vertices: list[Vector], line_from: Vector, line_to: Vector) -> bool:
   
     n = len(vertices)

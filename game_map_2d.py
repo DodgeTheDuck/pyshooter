@@ -1,11 +1,11 @@
 
-import game
+import engine
 import config
-from game_level import GameLevel
+from game_map_data import GameMapData
 from player import Player
 from vector import Vector
 
-class GameMap:
+class GameMap2d:
     def __init__(self):
         pass
 
@@ -16,8 +16,8 @@ class GameMap:
 
         #TODO: work out a more elegant scaling/transform thing
 
-        map: GameLevel = game.world.level
-        player: Player = game.world.player
+        map: GameMapData = engine.get_top_state().world.map_data
+        player: Player = engine.get_top_state().world.player
         offset: Vector = Vector((-player.pos.x * config.MAP_2D_SCALE + config.WIDTH / 2) / config.MAP_2D_SCALE, (-player.pos.y * config.MAP_2D_SCALE + config.HEIGHT / 2) / config.MAP_2D_SCALE)
 
         half_width = config.WIDTH / 2
@@ -28,7 +28,7 @@ class GameMap:
             in_frustum: bool = player.frustum.is_line_intersect(segment.pos_from, segment.pos_to)
             wall_color = (0, 255, 0) if in_frustum else (255, 255, 255)
 
-            game.gfx.render_line(
+            engine.gfx.render_line(
                 (segment.pos_from.x + offset.x) * config.MAP_2D_SCALE, 
                 (segment.pos_from.y + offset.y) * config.MAP_2D_SCALE, 
                 (segment.pos_to.x + offset.x) * config.MAP_2D_SCALE, 
@@ -36,8 +36,8 @@ class GameMap:
                 wall_color
             )
         
-        game.gfx.render_circle(half_width, half_height, 0.2 * config.MAP_2D_SCALE, (128, 128, 128))
-        game.gfx.render_line(half_width, half_height, half_width + player.frustum.far_left.x * config.MAP_2D_SCALE, half_height + player.frustum.far_left.y * config.MAP_2D_SCALE, (255, 255, 102))
-        game.gfx.render_line(half_width, half_height, half_width + player.frustum.far_right.x * config.MAP_2D_SCALE, half_height + player.frustum.far_right.y * config.MAP_2D_SCALE, (255, 255, 102))
+        engine.gfx.render_circle(half_width, half_height, 0.2 * config.MAP_2D_SCALE, (128, 128, 128))
+        engine.gfx.render_line(half_width, half_height, half_width + player.frustum.far_left.x * config.MAP_2D_SCALE, half_height + player.frustum.far_left.y * config.MAP_2D_SCALE, (255, 255, 102))
+        engine.gfx.render_line(half_width, half_height, half_width + player.frustum.far_right.x * config.MAP_2D_SCALE, half_height + player.frustum.far_right.y * config.MAP_2D_SCALE, (255, 255, 102))
 
         pass
