@@ -12,6 +12,8 @@ class Frustum:
     def update(self, eye: Vector, view_angle: float, fov: float, range: float):
         half_fov_rads: float = math.radians(fov) / 2.0
 
+        view_angle = math.radians(view_angle)
+
         self.eye_pos = eye
         self.far_left.x = math.cos(view_angle-half_fov_rads) * range
         self.far_left.y = math.sin(view_angle-half_fov_rads) * range

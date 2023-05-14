@@ -2,6 +2,7 @@
 from vector import Vector
 from segment import Segment
 from ray_hit_result import RayHitResult
+import config
 import math as Math
 
 class Ray:
@@ -11,18 +12,26 @@ class Ray:
         self.angle = angle
 
     def cast(self,  segments: list[Segment]) -> RayHitResult:
+
+        nearest = None
+
         for segment in segments:
             result = self.__test_intersect_new(segment)
-            if result is not None:
-                depth = round(Math.sqrt(result.x * result.x + result.y * result.y))
-                return RayHitResult(depth, result.x, result.y, segment)
-        return None
+            if result is not None:          
+                delta: Vector = Vector(self.pos_from.x - result.x, self.pos_from.y - result.y)
+                depth = abs(Math.sqrt(delta.x * delta.x + delta.y * delta.y))
+                if nearest is None:
+                    nearest = RayHitResult(depth, result.x, result.y, segment)
+                elif nearest.depth > depth:
+                    nearest = RayHitResult(depth, result.x, result.y, segment)
+        
+        return nearest
 
     def __test_intersect_new(self, segment: Segment) -> Vector:        
 
         pos_end = Vector(
-            self.pos_from.x + Math.cos(self.angle) * 1000,
-            self.pos_from.y + Math.sin(self.angle) * 1000
+            self.pos_from.x + Math.cos(self.angle) * config.VIEW_DIST,
+            self.pos_from.y + Math.sin(self.angle) * config.VIEW_DIST
         )
 
         p0 = [self.pos_from.x, self.pos_from.y]

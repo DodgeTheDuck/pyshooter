@@ -15,6 +15,9 @@ class Gfx:
     def set_framebuffer_pixel(self, x, y, color) -> None: 
         self.framebuffer.set_pixel(x, y, color)
 
+    def draw_framebuffer_wall(self, x, y, width, height, color) -> None:
+        pg.draw.rect(self.framebuffer.buffer, color, pg.Rect(x,y, width, height))
+
     def render_line(self, x0, y0, x1, y1, color) -> None:
         pg.draw.line(self.surface, color, (x0, y0), (x1, y1), 2)
 

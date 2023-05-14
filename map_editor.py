@@ -7,6 +7,7 @@ import pygame as pg
 import config
 import engine
 import math
+import os
 
 class MapEditor:
     def __init__(self) -> None:
@@ -96,6 +97,7 @@ class MapEditor:
                 ))
     
     def load(self, name) -> None:
+        if os.path.isfile("./maps/{0}.map".format(name)) == False: return None
         self.map.load_map_file(name)
 
     def __snap_to_grid(self, point: Vector) -> Vector:

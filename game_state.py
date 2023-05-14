@@ -13,7 +13,7 @@ class GameState(EngineState):
         return super().update(delta)
     
     def render(self) -> None:
-        self.world.render()
+        self.world.render()        
         return super().render()
     
     def handle_event(self, event: pg.event.Event) -> None:

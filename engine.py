@@ -94,7 +94,6 @@ def __render() -> None:
     #             gfx.set_framebuffer_pixel(i, round((mid_screen-proj_height/2))+j, (Math.pow(depth, 2) , 0, 0))
     
     gfx.clear_buffer()
-    gfx.draw_buffer()
 
     get_top_state().render()
 

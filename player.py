@@ -13,7 +13,7 @@ class Player(Entity):
         self.pos.y = y        
         self.frustum = Frustum()
         self.move_speed = 1.2
-        self.rot_speed = 0.8
+        self.rot_speed = 90
 
     def update(self, delta) -> None:
 
