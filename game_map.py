@@ -24,12 +24,16 @@ class GameMap:
         half_height = config.HEIGHT / 2
 
         for segment in map.segments:
+
+            in_frustum: bool = player.frustum.is_line_intersect(segment.pos_from, segment.pos_to)
+            wall_color = (0, 255, 0) if in_frustum else (255, 255, 255)
+
             game.gfx.render_line(
                 (segment.pos_from.x + offset.x) * config.MAP_2D_SCALE, 
                 (segment.pos_from.y + offset.y) * config.MAP_2D_SCALE, 
                 (segment.pos_to.x + offset.x) * config.MAP_2D_SCALE, 
                 (segment.pos_to.y + offset.y) * config.MAP_2D_SCALE, 
-                (255, 255, 255)
+                wall_color
             )
         
         game.gfx.render_circle(half_width, half_height, 0.2 * config.MAP_2D_SCALE, (128, 128, 128))
