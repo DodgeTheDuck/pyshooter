@@ -28,7 +28,7 @@ class World:
         rad_step = fov_rads / n_rays    
         rad_start = math.radians(self.player.rotation) - fov_rads_half
         mid_screen = round(config.HEIGHT / 2 * config.RENDER_SCALE)
-        screen_dist = (config.WIDTH / 2) * math.tan(fov_rads_half)
+        screen_dist = (config.WIDTH * config.RENDER_SCALE / 2) * math.tan(fov_rads_half)
         
         culled_segments: list[Segment] = []
         for segment in self.map_data.segments:
@@ -41,7 +41,7 @@ class World:
             ray = Ray(self.player.pos, ray_angle)
             result = ray.cast(culled_segments)
             if result is not None:
-                depth = result.depth
+                depth = result.depth * math.cos(math.radians(self.player.rotation) - ray_angle)
                 if depth <= 1: continue
                 proj_height = float(screen_dist / (depth + 0.0001))
                 wall_x = (config.WIDTH * config.RENDER_SCALE) / (config.WIDTH * config.RENDER_SCALE) * i
