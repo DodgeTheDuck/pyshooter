@@ -3,6 +3,7 @@ from vector import Vector
 from segment import Segment
 from ray_hit_result import RayHitResult
 import config
+import engine
 import math
 
 class Ray:
@@ -16,7 +17,9 @@ class Ray:
         nearest = None
 
         for segment in segments:
+            engine.metric_timer.measure_start("ray intersect")
             result = self.__test_intersect_new(segment)
+            engine.metric_timer.measure_end("ray intersect")
             if result is not None:          
                 delta: Vector = Vector(self.pos_from.x - result.x, self.pos_from.y - result.y)
                 depth = abs(math.sqrt(delta.x * delta.x + delta.y * delta.y))
@@ -27,7 +30,7 @@ class Ray:
         
         return nearest
 
-    def __test_intersect_new(self, segment: Segment) -> Vector:        
+    def __test_intersect_new(self, segment: Segment) -> Vector:                
 
         pos_end = Vector(
             self.pos_from.x + math.cos(self.angle) * config.VIEW_DIST,

@@ -55,13 +55,6 @@ class GameMap2d:
         for i in range(n_rays):
             ray_angle = rad_start + rad_step * i
 
-            # engine.gfx.render_line(
-            #     half_width, half_height, 
-            #     half_width + math.cos(ray_angle) * config.VIEW_DIST * config.MAP_2D_SCALE, 
-            #     half_height + math.sin(ray_angle) * config.VIEW_DIST * config.MAP_2D_SCALE,
-            #     (255, 0, 0)
-            # )
-            
             ray: Ray = Ray(player.pos, ray_angle)
             result = ray.cast(culled_segments)            
 
