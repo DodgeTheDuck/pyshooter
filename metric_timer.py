@@ -55,10 +55,17 @@ class MetricTimer:
                 total += p.end[i] - p.start[i]
             p.avg = total / len([p.start])
 
-    def __update_metrics_percentage(self) -> None:
-        total_ms = self.end_ms - self.start_ms          
-        for key in self.points:
-            if total_ms == 0: 
-                self.points[key].percentage = 0
+    def __update_metrics_percentage(self) -> None:        
+        
+        for key in self.points:            
+            p: Metric = self.points[key]
+            total_ms = 0
+            if p.parent is None:
+                total_ms = self.end_ms - self.start_ms
             else:
-                self.points[key].percentage = float((self.points[key].avg/total_ms)*100)        
+                total_ms = p.parent.avg
+
+            if total_ms == 0: 
+                p.percentage = 0
+            else:
+                p.percentage = float((p.avg/total_ms)*100)

@@ -10,16 +10,16 @@ class Frustum:
         pass
 
     def update(self, eye: Vector, view_angle: float, fov: float, range: float):
-        half_fov_rads: float = math.radians(fov) / 2.0
 
-        view_angle = math.radians(view_angle)
+        half_fov_rads: float = math.radians(fov) / 2.0
+        view_angle = math.radians(view_angle)        
 
         self.eye_pos = eye
-        self.far_left.x = math.cos(view_angle-half_fov_rads) * range
-        self.far_left.y = math.sin(view_angle-half_fov_rads) * range
+        self.far_left.x = self.eye_pos.x + math.cos(view_angle-half_fov_rads) * range
+        self.far_left.y = self.eye_pos.y + math.sin(view_angle-half_fov_rads) * range
 
-        self.far_right.x = math.cos(view_angle+half_fov_rads) * range
-        self.far_right.y = math.sin(view_angle+half_fov_rads) * range
+        self.far_right.x = self.eye_pos.x + math.cos(view_angle+half_fov_rads) * range
+        self.far_right.y = self.eye_pos.y + math.sin(view_angle+half_fov_rads) * range
 
     def is_point_inside(self, point: Vector) -> bool:
 

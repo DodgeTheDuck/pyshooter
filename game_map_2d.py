@@ -40,29 +40,36 @@ class GameMap2d:
             )
 
         
-        n_rays = round(config.WIDTH * config.RENDER_SCALE)
-        fov_rads: float = math.radians(config.FOV)
-        fov_rads_half: float = fov_rads / 2
-        rad_step = fov_rads / n_rays    
-        rad_start = math.radians(player.rotation) - fov_rads_half
+        # n_rays = round(config.WIDTH * config.RENDER_SCALE)
+        # fov_rads: float = math.radians(config.FOV)
+        # fov_rads_half: float = fov_rads / 2
+        # rad_step = fov_rads / n_rays    
+        # rad_start = math.radians(player.rotation) - fov_rads_half
         
-        culled_segments: list[Segment] = []
-        for segment in map.segments:
-            in_frustum: bool = player.frustum.is_line_intersect(segment.pos_from, segment.pos_to)
-            if in_frustum:
-                culled_segments.append(segment)
+        # culled_segments: list[Segment] = []
+        # for segment in map.segments:
+        #     in_frustum: bool = player.frustum.is_line_intersect(segment.pos_from, segment.pos_to)
+        #     if in_frustum:
+        #         culled_segments.append(segment)
 
-        for i in range(n_rays):
-            ray_angle = rad_start + rad_step * i
+        # for i in range(n_rays):
+        #     ray_angle = rad_start + rad_step * i
 
-            ray: Ray = Ray(player.pos, ray_angle)
-            result = ray.cast(culled_segments)            
+        #     ray: Ray = Ray(player.pos, ray_angle)
+        #     result = ray.cast(culled_segments)            
 
-            if result is not None:                
-                engine.gfx.render_circle(result.hit_x * config.MAP_2D_SCALE + offset.x * config.MAP_2D_SCALE, result.hit_y * config.MAP_2D_SCALE + offset.y * config.MAP_2D_SCALE, 0.05 * config.MAP_2D_SCALE, (128, 128, 255))
+        #     if result is not None:                
+        #         engine.gfx.render_circle(result.hit_x * config.MAP_2D_SCALE + offset.x * config.MAP_2D_SCALE, result.hit_y * config.MAP_2D_SCALE + offset.y * config.MAP_2D_SCALE, 0.02 * config.MAP_2D_SCALE, (128, 128, 255))
         
+        far_left_x = half_width + (player.frustum.far_left.x - player.frustum.eye_pos.x) * config.MAP_2D_SCALE
+        far_left_y = half_height + (player.frustum.far_left.y - player.frustum.eye_pos.y) * config.MAP_2D_SCALE
+
+        far_right_x = half_width + (player.frustum.far_right.x - player.frustum.eye_pos.x) * config.MAP_2D_SCALE
+        far_right_y = half_height + (player.frustum.far_right.y - player.frustum.eye_pos.y) * config.MAP_2D_SCALE
+
         engine.gfx.render_circle(half_width, half_height, 0.2 * config.MAP_2D_SCALE, (128, 128, 128))
-        engine.gfx.render_line(half_width, half_height, half_width + player.frustum.far_left.x * config.MAP_2D_SCALE, half_height + player.frustum.far_left.y * config.MAP_2D_SCALE, (255, 255, 102))
-        engine.gfx.render_line(half_width, half_height, half_width + player.frustum.far_right.x * config.MAP_2D_SCALE, half_height + player.frustum.far_right.y * config.MAP_2D_SCALE, (255, 255, 102))
+        engine.gfx.render_line(half_width, half_height, far_left_x, far_left_y, (255, 255, 102))
+        engine.gfx.render_line(half_width, half_height, far_right_x, far_right_y, (255, 255, 102))
+        engine.gfx.render_line(far_left_x, far_left_y, far_right_x, far_right_y, (255, 255, 102))
 
         pass

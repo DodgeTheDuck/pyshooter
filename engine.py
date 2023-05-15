@@ -93,24 +93,6 @@ def __update(delta) -> None:
     pass
 
 def __render() -> None:    
-
-    # n_rays = round(config.WIDTH * config.RENDER_SCALE)
-    # fov_rads: float = Math.radians(config.FOV)
-    # fov_rads_half: float = fov_rads / 2
-    # rad_step = fov_rads / n_rays    
-    # mid_screen = round((config.HEIGHT * config.RENDER_SCALE) / 2)
-
-    # screen_dist = ((config.WIDTH * config.RENDER_SCALE) / 2) / Math.tan(fov_rads_half)    
-
-    # for i in range(n_rays):        
-    #     ray_angle = -fov_rads_half + (rad_step * i) + player.angle
-    #     ray = Ray(Vector(player.pos.x, player.pos.y), ray_angle)
-    #     result = ray.cast(segments)
-    #     if result is not None:                        
-    #         depth = result.depth * Math.cos(player.angle - ray_angle)
-    #         proj_height = screen_dist / (depth + 0.0001)
-    #         for j in range(round(proj_height)):
-    #             gfx.set_framebuffer_pixel(i, round((mid_screen-proj_height/2))+j, (Math.pow(depth, 2) , 0, 0))
     
     gfx.clear_buffer()
 

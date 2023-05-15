@@ -13,12 +13,12 @@ def cyrus_beck_clip(vertices: list[Vector], line_from: Vector, line_to: Vector) 
     n = len(vertices)
     # normals initialized dynamically(can do it statically also, doesn't matter)
     normals: list[Vector] = [Vector(0, 0) for i in range(n)]
-  
-    # calculating the normals
-    for i in range(n):
-        normals[i].y = vertices[(i + 1) % n].x - vertices[i].x
-        normals[i].x = vertices[i].y - vertices[(i + 1) % n].y;   
-  
+    numerator: list[float] = [0 for i in range(n)]
+    denominator: list[float] = [0 for i in range(n)]
+    tE: list[float] = [] 
+    tL: list[float] = []
+    t: list[float] = [0.0 for i in range(n)]
+
     # calculating P1 - P0
     P1_P0: Vector = Vector(line_to.x - line_from.x, line_to.y - line_from.y)
   
@@ -27,35 +27,20 @@ def cyrus_beck_clip(vertices: list[Vector], line_from: Vector, line_to: Vector) 
   
     # calculating the values of P0 - PEi for all edges
     for i in range(n):
+        normals[i].y = vertices[(i + 1) % n].x - vertices[i].x
+        normals[i].x = vertices[i].y - vertices[(i + 1) % n].y
+        #normals[i] = Vector.Normalise(normals[i])
         # calculating PEi - P0, so that the
         # denominator won't have to multiply by -1
         P0_PEi[i].x = vertices[i].x - line_from.x  
         # while calculating 't'
         P0_PEi[i].y = vertices[i].y - line_from.y
-  
-    numerator: list[int] = [0 for i in range(n)]
-    denominator: list[int] = [0 for i in range(n)]
-  
-    # calculating the numerator and denominators
-    # using the dot function
-    for i in range(n):
+
         numerator[i] = Vector.Dot(normals[i], P0_PEi[i])
         denominator[i] = Vector.Dot(normals[i], P1_P0)
-      
-    # initializing the 't' values dynamically
-    t: list[float] = [0.0 for i in range(n)]
   
-    # making two vectors called 't entering'
-    # and 't leaving' to group the 't's
-    # according to their denominators
-    tE: list[float] = [] 
-    tL: list[float] = []
-  
-    # calculating 't' and grouping them accordingly
-    for i in range(n):  
-
         if(denominator[i] == 0): 
-            tE.append(t[i])
+            tL.append(t[i])
             continue
 
         t[i] = float(numerator[i]) / float(denominator[i])
@@ -65,17 +50,10 @@ def cyrus_beck_clip(vertices: list[Vector], line_from: Vector, line_to: Vector) 
         else:
             tL.append(t[i])
     
-  
-    # initializing the final two values of 't'
-    temp: list[float] = [0.0, 0.0]
-  
-    # taking the max of all 'tE' and 0, so pushing 0
     tE.append(0.0)
-    temp[0] = max(tE)
-  
-    # taking the min of all 'tL' and 1, so pushing 1
     tL.append(1.0)
-    temp[1] = min(tL)
+
+    temp = (max(tE), min(tL))      
   
     # entering 't' value cannot be
     # greater than exiting 't' value,

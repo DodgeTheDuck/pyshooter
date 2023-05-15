@@ -9,7 +9,7 @@ class Gfx:
     def __init__(self, pg_surface: pg.Surface):
         pg.font.init()
         self.surface = pg_surface
-        self.framebuffer = Framebuffer(config.WIDTH * config.RENDER_SCALE, config.HEIGHT * config.RENDER_SCALE)        
+        self.framebuffer = Framebuffer(config.WIDTH * config.RENDER_SCALE, config.HEIGHT * config.RENDER_SCALE)
 
     def set_framebuffer_pixel(self, x, y, color) -> None: 
         self.framebuffer.set_pixel(x, y, color)

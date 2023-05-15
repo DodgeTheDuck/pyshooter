@@ -8,9 +8,13 @@ import math
 
 class Ray:
     
-    def __init__(self, pos_from: Vector, angle: float):
+    def __init__(self, pos_from: Vector, angle: float, range: float = config.VIEW_DIST):
         self.pos_from = pos_from
-        self.angle = angle
+        self.angle = angle        
+        self.pos_end = Vector(
+            self.pos_from.x + math.cos(self.angle) * range,
+            self.pos_from.y + math.sin(self.angle) * range
+        )
 
     def cast(self,  segments: list[Segment]) -> RayHitResult:
 
@@ -20,6 +24,7 @@ class Ray:
             engine.metric_timer.measure_start("ray intersect")
             result = self.__test_intersect_new(segment)
             engine.metric_timer.measure_end("ray intersect")
+            engine.metric_timer.measure_start("nearest test")
             if result is not None:          
                 delta: Vector = Vector(self.pos_from.x - result.x, self.pos_from.y - result.y)
                 depth = abs(math.sqrt(delta.x * delta.x + delta.y * delta.y))
@@ -27,18 +32,15 @@ class Ray:
                     nearest = RayHitResult(depth, result.x, result.y, segment)
                 elif nearest.depth > depth:
                     nearest = RayHitResult(depth, result.x, result.y, segment)
+            engine.metric_timer.measure_end("nearest test")
         
         return nearest
 
     def __test_intersect_new(self, segment: Segment) -> Vector:                
 
-        pos_end = Vector(
-            self.pos_from.x + math.cos(self.angle) * config.VIEW_DIST,
-            self.pos_from.y + math.sin(self.angle) * config.VIEW_DIST
-        )
 
         p0 = [self.pos_from.x, self.pos_from.y]
-        p1 = [pos_end.x, pos_end.y]
+        p1 = [self.pos_end.x, self.pos_end.y]
         p2 = [segment.pos_from.x, segment.pos_from.y]
         p3 = [segment.pos_to.x, segment.pos_to.y]
 
