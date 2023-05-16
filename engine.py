@@ -7,12 +7,13 @@ from metric_timer import MetricTimer
 from engine_state import EngineState
 from debug import Debug
 
-gfx: Gfx = None
-debug: Debug = None
-metric_timer: MetricTimer = None
+gfx: Gfx
+debug: Debug
+metric_timer: MetricTimer
 time_last_render: int = 0
 time_last_update: int = 0
 time_last_loop: int = 0
+time_last_frame: int = 0
 second_timer: int = 0
 fps_counter: int = 0
 tps_counter: int = 0
