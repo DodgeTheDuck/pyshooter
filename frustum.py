@@ -36,7 +36,7 @@ class Frustum:
         b: float = ((y3 - y1)*(x - x3) + (x1 - x3)*(y - y3)) / denominator
         c: float = 1 - a - b
         
-        return 0 <= a and a <= 1 and 0 <= b and b <= 1 and 0 <= c and c <= 1 
+        return 0 <= a <= 1 and 0 <= b <= 1 and 0 <= c <= 1
     
     def is_line_intersect(self, line_from: Vector, line_to: Vector) -> bool: 
         return line_clipping.cyrus_beck_clip([self.eye_pos, self.far_left, self.far_right], line_from, line_to)
