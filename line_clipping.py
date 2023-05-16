@@ -12,18 +12,18 @@ def cyrus_beck_clip(vertices: list[Vector], line_from: Vector, line_to: Vector) 
   
     n = len(vertices)
     # normals initialized dynamically(can do it statically also, doesn't matter)
-    normals: list[Vector] = [Vector(0, 0) for i in range(n)]
-    numerator: list[float] = [0 for i in range(n)]
-    denominator: list[float] = [0 for i in range(n)]
+    normals: list[Vector] = [Vector(0, 0) for _ in range(n)]
+    numerator: list[float] = [0 for _ in range(n)]
+    denominator: list[float] = [0 for _ in range(n)]
     tE: list[float] = [] 
     tL: list[float] = []
-    t: list[float] = [0.0 for i in range(n)]
+    t: list[float] = [0.0 for _ in range(n)]
 
     # calculating P1 - P0
     P1_P0: Vector = Vector(line_to.x - line_from.x, line_to.y - line_from.y)
   
     # initializing all values of P0 - PEi
-    P0_PEi: list[Vector] = [Vector(0, 0) for i in range(n)]
+    P0_PEi: list[Vector] = [Vector(0, 0) for _ in range(n)]
   
     # calculating the values of P0 - PEi for all edges
     for i in range(n):
