@@ -1,4 +1,4 @@
-
+from typing import Optional
 from vector import Vector
 from segment import Segment
 from ray_hit_result import RayHitResult
@@ -36,7 +36,7 @@ class Ray:
         
         return nearest
 
-    def __test_intersect_new(self, segment: Segment) -> Vector:                
+    def __test_intersect_new(self, segment: Segment) -> Optional[Vector]:
 
 
         p0 = [self.pos_from.x, self.pos_from.y]
