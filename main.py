@@ -1,4 +1,3 @@
-
 from game_state import GameState
 from map_editor_state import MapEditorState
 import engine
@@ -6,7 +5,7 @@ import engine
 EXIT_SUCCESS = 0
 
 
-def main():    
+def main():
     engine.init()
     engine.push_state(GameState())
     engine.run()

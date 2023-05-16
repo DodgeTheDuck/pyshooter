@@ -1,4 +1,3 @@
-
 from game_map_data import GameMapData
 from game_map_2d import GameMap2d
 from ray import Ray
@@ -9,6 +8,7 @@ import math
 import engine
 import config
 import pygame as pg
+
 
 class World:
     def __init__(self):
@@ -21,7 +21,6 @@ class World:
 
     def update(self, delta: float) -> None:
         self.player.update(delta)
-        pass
 
     def render(self) -> None:
 
@@ -30,10 +29,10 @@ class World:
         n_rays = round(config.WIDTH * config.RENDER_SCALE)
         fov_rads: float = math.radians(config.FOV)
         fov_rads_half: float = fov_rads / 2
-        rad_step = fov_rads / n_rays    
+        rad_step = fov_rads / n_rays
         rad_start = math.radians(self.player.rotation) - fov_rads_half
         mid_screen = round(config.HEIGHT / 2 * config.RENDER_SCALE)
-        screen_dist = (config.WIDTH / 2 * config.RENDER_SCALE) * math.tan(fov_rads_half)                
+        screen_dist = (config.WIDTH / 2 * config.RENDER_SCALE) * math.tan(fov_rads_half)
 
         engine.metric_timer.measure_end("casting init")
 
@@ -46,25 +45,23 @@ class World:
         engine.metric_timer.measure_end("culling")
 
         engine.metric_timer.measure_start("casting")
-        for i in range(n_rays):        
+        for i in range(n_rays):
             ray_angle = rad_start + rad_step * i
             ray = Ray(self.player.pos, ray_angle)
             result = ray.cast(culled_segments)
-            if result is not None:                
-                depth = result.depth * math.cos(math.radians(self.player.rotation) - ray_angle) # fishbowl fix
-                #if depth <= 0.000: continue
-                proj_height = float(screen_dist / (depth + 0.0001))                                
+            if result is not None:
+                depth = result.depth * math.cos(math.radians(self.player.rotation) - ray_angle)  # fishbowl fix
+                # if depth <= 0.000: continue
+                proj_height = float(screen_dist / (depth + 0.0001))
                 engine.metric_timer.measure_start("wall draw")
-                engine.gfx.draw_framebuffer_wall(i, mid_screen-proj_height/2, 1, proj_height, (255 / (depth + 1), 0, 0))
-                engine.metric_timer.measure_end("wall draw")                
+                engine.gfx.draw_framebuffer_wall(i, mid_screen - proj_height / 2, 1, proj_height,
+                                                 (255 / (depth + 1), 0, 0))
+                engine.metric_timer.measure_end("wall draw")
         engine.metric_timer.measure_end("casting")
-        
+
         engine.metric_timer.measure_start("draw buffer")
         engine.gfx.draw_buffer()
         engine.metric_timer.measure_end("draw buffer")
 
         self.map.render()
         self.player.render()
-
-        pass
-

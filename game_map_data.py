@@ -1,8 +1,8 @@
-
 from segment import Segment
 from vector import Vector
 import engine as Game
 import config
+
 
 class GameMapData:
     def __init__(self):
@@ -34,9 +34,9 @@ class GameMapData:
     def add_segment(self, segment: Segment) -> int:
         self.segments.append(segment)
         return len(self.segments) - 1
-    
+
     def get_segment(self, index: int) -> Segment:
         return self.segments[index]
-    
+
     def update_segment(self, index: int, segment: Segment) -> None:
         self.segments[index] = segment
