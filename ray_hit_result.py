@@ -1,4 +1,3 @@
-
 class RayHitResult():
     def __init__(self, depth, hit_x, hit_y, segment):
         self.depth = depth

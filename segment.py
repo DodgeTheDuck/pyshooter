@@ -1,5 +1,5 @@
-
 from vector import Vector
+
 
 class Segment():
     def __init__(self, pos_from: Vector, pos_to: Vector):

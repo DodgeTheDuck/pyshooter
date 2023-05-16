@@ -1,4 +1,3 @@
-
 class Pixel:
     def __init__(self, r, g, b):
         self.r = r

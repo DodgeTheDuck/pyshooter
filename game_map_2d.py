@@ -1,4 +1,3 @@
-
 import engine
 import config
 import math
@@ -8,6 +7,7 @@ from player import Player
 from vector import Vector
 from ray import Ray
 
+
 class GameMap2d:
     def __init__(self):
         pass
@@ -16,36 +16,34 @@ class GameMap2d:
         pass
 
     def render(self) -> None:
-
-        #TODO: work out a more elegant scaling/transform thing
+        # TODO: work out a more elegant scaling/transform thing
 
         map: GameMapData = engine.get_top_state().world.map_data
         player: Player = engine.get_top_state().world.player
-        offset: Vector = Vector((-player.pos.x * config.MAP_2D_SCALE + config.WIDTH / 2) / config.MAP_2D_SCALE, (-player.pos.y * config.MAP_2D_SCALE + config.HEIGHT / 2) / config.MAP_2D_SCALE)
+        offset: Vector = Vector((-player.pos.x * config.MAP_2D_SCALE + config.WIDTH / 2) / config.MAP_2D_SCALE,
+                                (-player.pos.y * config.MAP_2D_SCALE + config.HEIGHT / 2) / config.MAP_2D_SCALE)
 
         half_width = config.WIDTH / 2
         half_height = config.HEIGHT / 2
 
         for segment in map.segments:
-
             in_frustum: bool = player.frustum.is_line_intersect(segment.pos_from, segment.pos_to)
             wall_color = (0, 255, 0) if in_frustum else (255, 255, 255)
 
             engine.gfx.render_line(
-                (segment.pos_from.x + offset.x) * config.MAP_2D_SCALE, 
-                (segment.pos_from.y + offset.y) * config.MAP_2D_SCALE, 
-                (segment.pos_to.x + offset.x) * config.MAP_2D_SCALE, 
-                (segment.pos_to.y + offset.y) * config.MAP_2D_SCALE, 
+                (segment.pos_from.x + offset.x) * config.MAP_2D_SCALE,
+                (segment.pos_from.y + offset.y) * config.MAP_2D_SCALE,
+                (segment.pos_to.x + offset.x) * config.MAP_2D_SCALE,
+                (segment.pos_to.y + offset.y) * config.MAP_2D_SCALE,
                 wall_color
             )
 
-        
         # n_rays = round(config.WIDTH * config.RENDER_SCALE)
         # fov_rads: float = math.radians(config.FOV)
         # fov_rads_half: float = fov_rads / 2
         # rad_step = fov_rads / n_rays    
         # rad_start = math.radians(player.rotation) - fov_rads_half
-        
+
         # culled_segments: list[Segment] = []
         # for segment in map.segments:
         #     in_frustum: bool = player.frustum.is_line_intersect(segment.pos_from, segment.pos_to)
@@ -60,7 +58,7 @@ class GameMap2d:
 
         #     if result is not None:                
         #         engine.gfx.render_circle(result.hit_x * config.MAP_2D_SCALE + offset.x * config.MAP_2D_SCALE, result.hit_y * config.MAP_2D_SCALE + offset.y * config.MAP_2D_SCALE, 0.02 * config.MAP_2D_SCALE, (128, 128, 255))
-        
+
         far_left_x = half_width + (player.frustum.far_left.x - player.frustum.eye_pos.x) * config.MAP_2D_SCALE
         far_left_y = half_height + (player.frustum.far_left.y - player.frustum.eye_pos.y) * config.MAP_2D_SCALE
 

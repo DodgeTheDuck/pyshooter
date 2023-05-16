@@ -1,4 +1,4 @@
-
+from typing import Optional
 from vector import Vector
 from segment import Segment
 from ray_hit_result import RayHitResult
@@ -6,17 +6,18 @@ import config
 import engine
 import math
 
+
 class Ray:
-    
+
     def __init__(self, pos_from: Vector, angle: float, range: float = config.VIEW_DIST):
         self.pos_from = pos_from
-        self.angle = angle        
+        self.angle = angle
         self.pos_end = Vector(
             self.pos_from.x + math.cos(self.angle) * range,
             self.pos_from.y + math.sin(self.angle) * range
         )
 
-    def cast(self,  segments: list[Segment]) -> RayHitResult:
+    def cast(self, segments: list[Segment]) -> RayHitResult:
 
         nearest = None
 
@@ -25,7 +26,7 @@ class Ray:
             result = self.__test_intersect_new(segment)
             engine.metric_timer.measure_end("ray intersect")
             engine.metric_timer.measure_start("nearest test")
-            if result is not None:          
+            if result is not None:
                 delta: Vector = Vector(self.pos_from.x - result.x, self.pos_from.y - result.y)
                 depth = abs(math.sqrt(delta.x * delta.x + delta.y * delta.y))
                 if nearest is None:
@@ -33,11 +34,10 @@ class Ray:
                 elif nearest.depth > depth:
                     nearest = RayHitResult(depth, result.x, result.y, segment)
             engine.metric_timer.measure_end("nearest test")
-        
+
         return nearest
 
-    def __test_intersect_new(self, segment: Segment) -> Vector:                
-
+    def __test_intersect_new(self, segment: Segment) -> Optional[Vector]:
 
         p0 = [self.pos_from.x, self.pos_from.y]
         p1 = [self.pos_end.x, self.pos_end.y]
@@ -51,7 +51,7 @@ class Ray:
 
         denom = float(s10_x * s32_y - s32_x * s10_y)
 
-        if denom == 0 : return None # collinear
+        if denom == 0: return None  # collinear
 
         denom_is_positive = denom > 0
 
@@ -60,13 +60,13 @@ class Ray:
 
         s_numer = s10_x * s02_y - s10_y * s02_x
 
-        if (s_numer < 0) == denom_is_positive : return None # no collision
+        if (s_numer < 0) == denom_is_positive: return None  # no collision
 
         t_numer = s32_x * s02_y - s32_y * s02_x
 
-        if (t_numer < 0) == denom_is_positive : return None # no collision
+        if (t_numer < 0) == denom_is_positive: return None  # no collision
 
-        if (s_numer > denom) == denom_is_positive or (t_numer > denom) == denom_is_positive : return None # no collision
+        if (s_numer > denom) == denom_is_positive or (t_numer > denom) == denom_is_positive: return None  # no collision
 
         # collision detected
 
