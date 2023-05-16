@@ -97,7 +97,7 @@ class MapEditor:
                 ))
     
     def load(self, name) -> None:
-        if os.path.isfile("./maps/{0}.map".format(name)) == False: return None
+        if not os.path.isfile("./maps/{0}.map".format(name)): return None
         self.map.load_map_file(name)
 
     def __snap_to_grid(self, point: Vector) -> Vector:
