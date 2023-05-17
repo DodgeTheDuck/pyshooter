@@ -7,7 +7,7 @@ EXIT_SUCCESS = 0
 
 def main():    
     engine.init()
-    engine.push_state(GameState())
+    engine.push_state(MapEditorState())
     engine.run()
     return EXIT_SUCCESS
 
