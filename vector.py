@@ -12,6 +12,15 @@ class Vector:
     def Length(v) -> float:
         return math.sqrt(v.x * v.x + v.y * v.y)
 
-    def Normalise(v):
+    def Normalise(v) -> None:
         len = Vector.Length(v)
         return Vector(v.x / len, v.y / len)
+
+    def __str__(self) -> str:
+        return "[{0},{1}]".format(self.x, self.y)
+
+    def __mul__(self, other: float):
+        return Vector(self.x * other, self.y * other)
+
+    def __truediv__(self, other: float):
+        return Vector(self.x / other, self.y / other)

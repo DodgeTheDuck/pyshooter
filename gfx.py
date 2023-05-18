@@ -17,8 +17,8 @@ class Gfx:
     def draw_framebuffer_wall(self, x, y, width, height, color) -> None:
         pg.draw.rect(self.framebuffer.buffer, color, pg.Rect(x,y, width, height))
 
-    def render_line(self, x0, y0, x1, y1, color) -> None:
-        pg.draw.line(self.surface, color, (x0, y0), (x1, y1), 2)
+    def render_line(self, x0, y0, x1, y1, color, thickness = 1) -> None:
+        pg.draw.line(self.surface, color, (x0, y0), (x1, y1), thickness)
 
     def render_circle(self, x, y, r, color) -> None:
         pg.draw.circle(self.surface, color, (x, y), r)    
