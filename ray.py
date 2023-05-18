@@ -30,7 +30,7 @@ class Ray:
                 depth = abs(math.sqrt(delta.x * delta.x + delta.y * delta.y))
                 if nearest is None:
                     nearest = RayHitResult(depth, result.x, result.y, segment)
-                elif nearest.depth > depth:
+                elif nearest.depth >= depth:
                     nearest = RayHitResult(depth, result.x, result.y, segment)
             engine.metric_timer.measure_end("nearest test")
         
