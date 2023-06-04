@@ -6,7 +6,7 @@ import config
 
 class GameMapData:
     def __init__(self):
-        self.segments: list[Segment] = []
+        self.segments: list[Segment] = []        
         self.spawn_point: Vector = Vector(0, 0)
 
     def load_map_file(self, name) -> None:

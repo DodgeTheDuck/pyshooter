@@ -1,6 +1,6 @@
 from vector import Vector
 
-# check if line segment intersects triangle using Cyrus Beck algorithm
+# check if line segment intersects polygon using Cyrus Beck algorithm
 # I converted this in a fairly brain dead way from C++ found here...
 # https://www.geeksforgeeks.org/line-clipping-set-2-cyrus-beck-algorithm/
 # TODO: work out how it works and hopefully optimise it better for Python

@@ -28,3 +28,6 @@ class CameraOrtho:
 
     def screen_to_world(self, point: Vector) -> Vector:
         return Vector(point.x / config.MAP_2D_SCALE + self.pos.x, point.y / config.MAP_2D_SCALE + self.pos.y)
+
+    def world_to_screen(self, point: Vector) -> Vector:
+        return Vector((point.x - self.pos.x) * config.MAP_2D_SCALE, (point.y - self.pos.y) * config.MAP_2D_SCALE)

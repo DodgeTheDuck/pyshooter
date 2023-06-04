@@ -17,7 +17,19 @@ class Vector:
         return Vector(v.x / len, v.y / len)
 
     def __str__(self) -> str:
-        return "[{0},{1}]".format(self.x, self.y)
+        return "[{0:.02f},{1:.02f}]".format(self.x, self.y)
+    
+    def __add__(self, other):
+        if isinstance(other, Vector):
+            return Vector(self.x + other.x, self.y + other.y)
+        if isinstance(other, float):
+            return Vector(self.x + other, self.y + other)   
+
+    def __sub__(self, other):
+        if isinstance(other, Vector):
+            return Vector(self.x - other.x, self.y - other.y)
+        if isinstance(other, float):
+            return Vector(self.x - other, self.y - other)        
 
     def __mul__(self, other: float):
         return Vector(self.x * other, self.y * other)
